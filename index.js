@@ -51,8 +51,13 @@ async function run() {
 
     // collection end
 
-
-
+      //  user api start
+      app.post('/singup', async (req, res) => {
+        const body = req.body;
+        const singupUser = await usersCollection.insertOne(body)
+        res.send(singupUser)
+      })
+      //  user api end
 
 
 
