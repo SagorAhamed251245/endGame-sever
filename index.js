@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
 
 // mongodb start
 
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.ry6i5bk.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -49,12 +49,14 @@ async function run() {
     // collection start
     const usersCollection = client.db("endGame").collection("users");
     const collegesCollection = client.db("endGame").collection("colleges");
-    const admittedCollegeCollection = client.db("endGame").collection("admitted");
+    const admittedCollegeCollection = client
+      .db("endGame")
+      .collection("admitted");
 
     // collection end
 
     //  user api start
-    
+
     app.put("/users/:email", async (req, res) => {
       const email = req.params.email;
       const user = req.body;
@@ -70,20 +72,29 @@ async function run() {
 
     // Colleges Api start
 
-    app.get('/colleges', async (req, res) => {
+    app.get("/colleges", async (req, res) => {
       const colleges = await collegesCollection.find().toArray();
-      res.send(colleges)
-    })
+      res.send(colleges);
+    });
     // Colleges Api end
 
     // admitted College api start
-    app.post('/admission', async (req, res) => {
+    app.post("/admission", async (req, res) => {
       const body = req.body;
       const result = await admittedCollegeCollection.insertOne(body);
-      res.send(result)
-    })
-    // admitted College api end 
+      res.send(result);
+    });
 
+    app.patch("/reviews/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const updateObject = req.body;
+      const result = await admittedCollegeCollection.updateOne(query, {
+        $set: updateObject,
+      });
+      res.send(result);
+    });
+    // admitted College api end
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
