@@ -47,24 +47,24 @@ async function run() {
     });
 
     // collection start
-    const usersCollection = client.db('endGame').collection('users');
+    const usersCollection = client.db("endGame").collection("users");
 
     // collection end
 
-      //  user api start
-      app.post('/singup', async (req, res) => {
-        const body = req.body;
-        const singupUser = await usersCollection.insertOne(body)
-        res.send(singupUser)
-      })
-      //  user api end
-
-
-
-
-
-
-
+    //  user api start
+    
+    app.put("/users/:email", async (req, res) => {
+      const email = req.params.email;
+      const user = req.body;
+      const query = { email: email };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: user,
+      };
+      const result = await usersCollection.updateOne(query, updateDoc, options);
+      res.send(result);
+    });
+    //  user api end
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
