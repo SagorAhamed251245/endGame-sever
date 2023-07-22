@@ -48,6 +48,7 @@ async function run() {
 
     // collection start
     const usersCollection = client.db("endGame").collection("users");
+    const collegesCollection = client.db("endGame").collection("colleges");
 
     // collection end
 
@@ -65,6 +66,14 @@ async function run() {
       res.send(result);
     });
     //  user api end
+
+    // Colleges Api start
+
+    app.get('/colleges', async (req, res) => {
+      const colleges = await collegesCollection.find().toArray();
+      res.send(colleges)
+    })
+    // Colleges Api end
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
