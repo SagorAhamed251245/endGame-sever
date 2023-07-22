@@ -68,6 +68,14 @@ async function run() {
       const result = await usersCollection.updateOne(query, updateDoc, options);
       res.send(result);
     });
+
+    app.get("/users/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const result = await usersCollection.findOne(query);
+      res.send(result);
+    });
+    
     //  user api end
 
     // Colleges Api start
@@ -87,7 +95,7 @@ async function run() {
 
     app.get("/admitted/:email", async (req, res) => {
       const email = req.params.email;
-      const query = {candidate_email: email};
+      const query = { candidate_email: email };
       const result = await admittedCollegeCollection.find(query).toArray();
       res.send(result);
     });
