@@ -119,8 +119,9 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const updateObject = req.body;
+      updateObject.reviewDate = new Date();
       const result = await admittedCollegeCollection.updateOne(query, {
-        $set: updateObject,
+        $set: updateObject
       });
       res.send(result);
     });
