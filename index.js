@@ -85,6 +85,13 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/admitted/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = {candidate_email: email};
+      const result = await admittedCollegeCollection.find(query).toArray();
+      res.send(result);
+    });
+
     app.patch("/reviews/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
