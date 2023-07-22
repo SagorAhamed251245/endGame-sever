@@ -92,6 +92,13 @@ async function run() {
       const colleges = await collegesCollection.find().toArray();
       res.send(colleges);
     });
+    app.get("/college/:id" , async (req, res) => {
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await collegesCollection.findOne(query);
+      res.send(result);
+
+    })
     // Colleges Api end
 
     // admitted College api start
