@@ -46,6 +46,21 @@ async function run() {
       }
     });
 
+    // collection start
+    const usersCollection = client.db('endGame').collection('users');
+
+    // collection end
+
+
+
+
+
+
+
+
+
+
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
