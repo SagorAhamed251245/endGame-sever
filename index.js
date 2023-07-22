@@ -49,6 +49,7 @@ async function run() {
     // collection start
     const usersCollection = client.db("endGame").collection("users");
     const collegesCollection = client.db("endGame").collection("colleges");
+    const admittedCollegeCollection = client.db("endGame").collection("admitted");
 
     // collection end
 
@@ -74,6 +75,15 @@ async function run() {
       res.send(colleges)
     })
     // Colleges Api end
+
+    // admitted College api start
+    app.post('/admission', async (req, res) => {
+      const body = req.body;
+      const result = await admittedCollegeCollection.insertOne(body);
+      res.send(result)
+    })
+    // admitted College api end 
+
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
