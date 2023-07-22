@@ -75,6 +75,14 @@ async function run() {
       const result = await usersCollection.findOne(query);
       res.send(result);
     });
+
+    app.patch("/updateUser/:id" , async (req, res) => {
+      const id = req.params.id;
+      const body = req.body
+      const query = { _id: new ObjectId(id)}
+      const result = await usersCollection.updateOne(query, {$set: body});
+      res.send(result);
+    })
     
     //  user api end
 
