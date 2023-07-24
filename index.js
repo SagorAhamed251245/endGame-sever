@@ -76,14 +76,14 @@ async function run() {
       res.send(result);
     });
 
-    app.patch("/updateUser/:id" , async (req, res) => {
-      const id = req.params.id;
-      const body = req.body
-      const query = { _id: new ObjectId(id)}
-      const result = await usersCollection.updateOne(query, {$set: body});
+    app.patch("/updateUser/:email", async (req, res) => {
+      const email = req.params.email;
+      const body = req.body;
+      const query = { email: email };
+      const result = await usersCollection.updateOne(query, { $set: body });
       res.send(result);
-    })
-    
+    });
+
     //  user api end
 
     // Colleges Api start
@@ -92,13 +92,12 @@ async function run() {
       const colleges = await collegesCollection.find().toArray();
       res.send(colleges);
     });
-    app.get("/college/:id" , async (req, res) => {
+    app.get("/college/:id", async (req, res) => {
       const id = req.params.id;
-      const query = {_id: new ObjectId(id)};
+      const query = { _id: new ObjectId(id) };
       const result = await collegesCollection.findOne(query);
       res.send(result);
-
-    })
+    });
     // Colleges Api end
 
     // admitted College api start
@@ -107,13 +106,17 @@ async function run() {
       const result = await admittedCollegeCollection.insertOne(body);
       res.send(result);
     });
-
+    app.get("/admitted", async (req, res) => {
+      const result = await admittedCollegeCollection.find().toArray();
+      res.send(result);
+    });
     app.get("/admitted/:email", async (req, res) => {
       const email = req.params.email;
       const query = { candidate_email: email };
       const result = await admittedCollegeCollection.find(query).toArray();
       res.send(result);
     });
+    
 
     app.patch("/reviews/:id", async (req, res) => {
       const id = req.params.id;
@@ -121,7 +124,7 @@ async function run() {
       const updateObject = req.body;
       updateObject.reviewDate = new Date();
       const result = await admittedCollegeCollection.updateOne(query, {
-        $set: updateObject
+        $set: updateObject,
       });
       res.send(result);
     });
